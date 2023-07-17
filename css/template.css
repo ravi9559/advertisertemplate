@@ -53,3 +53,8 @@
   .back-to-top-button.show {
     display: block !important;
   }
+
+  .logo{
+    max-width: 90% !important;
+
+  }
