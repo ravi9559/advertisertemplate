@@ -229,12 +229,14 @@ function adTemplate(advertiser) {
     `;
 }
 
-/* Copyright currentYear */
+
 
 document.getElementById("Advertisetemplate").innerHTML = `${advertiserData
   .map(adTemplate)
   .join("")}`;
 
+
+  /* Copyright currentYear */
 var currentYear = new Date().getFullYear();
 document.getElementById("currentYear").innerHTML = currentYear;
 

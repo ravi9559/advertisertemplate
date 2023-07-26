@@ -266,24 +266,23 @@
     </nav>
     <!--menu end-->
 
-    <!-- JSON template data-->
 
-    <div class="d-grid gap-2 d-md-block mt-3 text-center">
-      <button class="btn btn-danger mx-2"  id="prevBtn" type="button">Previous</button>
-      <button class="btn btn-danger mx-2" id="nextBtn" type="button">Next</button>
+    <div class="container">
+      <div id="productInfo">
+        <!-- Product details will be dynamically added here -->
+      </div>
+
+      
+
+        <div id="pagination" class="navigation">
+            <button onclick="loadPreviousProduct()">Previous</button>
+            <button onclick="loadNextProduct()">Next</button>
+        </div>
+        
+       
     </div>
-
-    <div id="resultContainer"></div>
-
-    
-   
-    <div class="container  overflow-hidden" >
-      <div class="row overflow-x-hidden" id="advertisetemplate"></div>
-      <!-- The parsed JSON data will be displayed here -->
-    </div>
-    
     
 
-    <script src="/js/scripts.js"></script>
+    <script src="/js/test.js"></script>
   </body>
 </html>
