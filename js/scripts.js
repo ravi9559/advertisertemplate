@@ -126,13 +126,15 @@ function renderCurrentData() {
                               
                               
                               <!-- /.offer detail start  -->
-                              
+
+                              ${addPropertyIfExists(detailsData.Detail,
+                                `                              
                               <div class="row m-2 pt-2 border-bottom " id="offerDetails" >
                               <h4 class="text-danger" >Offer Details</h4>
                                   <div class="ms-3"> ${detailsData.Detail} </div>
                               
                                  
-                              </div>
+                              </div> `)}
                               
                               <!-- /.offer detail end  -->
                               
