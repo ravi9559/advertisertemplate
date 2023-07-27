@@ -263,7 +263,7 @@ function getLocation(detailsData) {
     .filter(location => location.LocationType === "Address" && location.Address1 !== null)
     .map(
       (location) =>
-        `<i class="fas fa-fw fa-map-marker-alt"></i><span>${location.Address1}</span> `
+        `<p><i class="fas fa-fw fa-map-marker-alt"></i><span>${location.Address1}</span> </p>`
     )
     .join("");
 }
