@@ -1,6 +1,6 @@
 const homeurl = window.location.href.split("#")[0] + "#"; // Dynamic root path based on the current URL
 
-const proxyurl ="https://cors-anywhere.herokuapp.com/";
+
 const rooturl = "http://sdwebau.shopainternal.com.s3-website-ap-southeast-2.amazonaws.com/json/";
 
 const indexFile = "http://sdwebau.shopainternal.com.s3-website-ap-southeast-2.amazonaws.com/json/aaa_productlist.json";
@@ -11,7 +11,7 @@ let currentDataIndex = 0;
 
 async function fetchData() {
   try {
-    const response = await fetch(proxyurl+ encodeURIComponent(indexFile));
+    const response = await fetch(indexFile);
     const dataArray = await response.json();
 
     // Render the data on the HTML page
@@ -27,7 +27,7 @@ function renderCurrentData() {
   const productName = data.ProductName;
 
 
-  fetch( proxyurl+ encodeURIComponent(`${rooturl}${productName}.json`));
+  fetch( `${rooturl}${productName}.json`)
     .then(response => response.json())
     .then(detailsData => {
 
