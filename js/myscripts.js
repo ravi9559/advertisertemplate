@@ -3,6 +3,8 @@ const homeurl = window.location.href.split("#")[0] + "#"; // Dynamic root path b
 
 const rooturl = "http://sdwebau.shopainternal.com.s3-website-ap-southeast-2.amazonaws.com/json/";
 
+const imagesurl = "http://sdwebau.shopainternal.com.s3-website-ap-southeast-2.amazonaws.com/images/";
+
 const indexFile = "http://sdwebau.shopainternal.com.s3-website-ap-southeast-2.amazonaws.com/json/aaa_productlist.json";
 
 let currentDataIndex = 0;
@@ -50,7 +52,7 @@ function renderCurrentData() {
                                   <div class="row  shadow-lg m-5 py-2  bg-white"> 
                                           <div class=" row  py-2   ">  
                                           <div class="col-lg-4 ">
-                                              <img src="https://picsum.photos/640/360" class="img-fluid rounded m-3" alt="${detailsData.Headline} with ${detailsData.Advertiser}">
+                                           <img src="${imagesurl}coupons/${detailsData.ImageUri}" class="img-fluid rounded m-3" alt="${detailsData.Headline} with ${detailsData.Advertiser}">
                                           </div>
                                       
                                           <div class="col-lg-8">
