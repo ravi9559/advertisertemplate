@@ -285,3 +285,24 @@ function getContacts(detailsData) {
     })
     .join("");
 }
+
+
+
+  /* Copyright currentYear */
+  var currentYear = new Date().getFullYear();
+  document.getElementById("currentYear").innerHTML = currentYear;
+  
+  /* back to top */
+  
+  window.addEventListener("scroll", function () {
+    var backToTopButton = document.getElementById("backToTopButton");
+    backToTopButton.classList.toggle("show", window.scrollY > 50);
+  });
+  
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+  

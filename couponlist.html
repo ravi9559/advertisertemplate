@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<title>Coupon List Page</title>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<div>
+this is the coupon listpage
+</div>
+<br><br>
+<span id="loading" style="display:inline;">loading...</span>
+<ul id="couponList" style="display:none;"></ul>
+<br><br>
+
+<script>
+
+$( document ).ready(function() {
+
+        //var data = [{ "ProductId": 748148, "Advertiser": "Tropeaka", "Headline": "20% Off Bundles", "ProductName": "tropeaka-20-percent-off-bundles-retail-other" }, { "ProductId": 749525, "Advertiser": "Crossroads", "Headline": "Up to 75% Off Sale", "ProductName": "crossroads-up-to-75-percent-off-sale-retail-other" }, { "ProductId": 752922, "Advertiser": "My Muscle Chef", "Headline": "$20 Off Your First Order", "ProductName": "my-muscle-chef-$20-off-your-first-order-retail-other" }, { "ProductId": 752581, "Advertiser": "City Psychology", "Headline": "NDIS Registered Provider", "ProductName": "city-psychology-ndis-registered-provider-psychiatrists-psychologists" }, { "ProductId": 751156, "Advertiser": "PureSmile", "Headline": "20% Off Teeth Whitening Packages", "ProductName": "puresmile-20-percent-off-teeth-whitening-packages-beautician-services" }];
+
+        //var ul = $('#couponList');
+
+        //$.each(data, function (key, val) {
+        //    ul.append('<li><a href="https://sdwebau.shopainternal.com/json/' + val.ProductName + '.json">' + val.ProductId + '-' + val.Advertiser + ' - ' + val.Headline + '</a></li>');
+        //});
+
+        //$('#loading').hide();
+        //ul.show();
+
+
+    //get the coupon list json
+    $.getJSON("https://sdwebau.shopainternal.com/json/aaa_productlist.json", function (data) {
+        
+        var ul = $('#couponList');
+
+        $.each(data, function (key, val) {
+            ul.append('<li><a href="https://sdwebau.shopainternal.com/coupon/' + val.ProductName + '">' + val.ProductId + '-' + val.Advertiser + ' - ' + val.Headline + '</a></li>');
+        });
+
+        $('#loading').hide();
+        ul.show();
+
+    });
+  
+});
+
+</script>
+</body>
+</html>
