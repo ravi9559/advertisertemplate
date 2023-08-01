@@ -17,11 +17,10 @@ async function getProduct() {
     }
 
     const productJson = await response.json();
-    
+
     const imgUrl = `https://sdwebau.shopainternal.com/images/coupons/${productJson.ImageUri}`;
 
-    console.log(imgUrl)
-;
+    console.log(imgUrl);
     const setCtas = getCTA(productJson);
     const setLocations = getLocation(productJson);
 
@@ -57,7 +56,7 @@ async function getProduct() {
                                                 productJson.Advertiser
                                               }</h5>
                                              <!-- <p class="card-text pt-3"><i class="fas fa-fw fa-tag"></i> ${
-                                              productJson.Saving
+                                               productJson.Saving
                                              }</p> -->
                                               ${setLocations}
                                               ${addPropertyIfExists(
@@ -213,27 +212,25 @@ async function getProduct() {
 
 getProduct();
 
-
 function getCTA(productJson) {
-  return productJson.Ctas
-    .map((cta) => {
-      if (cta.Type === "Phone") {
-        return `<a class="btn btn-danger me-2 joinbtn" href="tel:${cta.Link}"><i class="fas fa-fw fa-phone-alt"></i> ${cta.Text}</a>`;
-      } else if (cta.Type === "Email") {
-        return `<a class="btn btn-danger joinbtn" href="mailto:${cta.Link}"><i class="fas fa-fw fa-${cta.Icon}"></i> ${cta.Text}</a>`;
-      }
-    })
-    .join("");
+  return productJson.Ctas.map((cta) => {
+    if (cta.Type === "Phone") {
+      return `<a class="btn btn-danger me-2 joinbtn" href="tel:${cta.Link}"><i class="fas fa-fw fa-phone-alt"></i> ${cta.Text}</a>`;
+    } else if (cta.Type === "Email") {
+      return `<a class="btn btn-danger joinbtn" href="mailto:${cta.Link}"><i class="fas fa-fw fa-${cta.Icon}"></i> ${cta.Text}</a>`;
+    }
+  }).join("");
 }
-
 
 function getLocation(productJson) {
   if (!productJson.Locations) {
-    return '';
+    return "";
   }
 
-  return productJson.Locations
-    .filter(location => location.LocationType === "Address" && location.Address1 !== null)
+  return productJson.Locations.filter(
+    (location) =>
+      location.LocationType === "Address" && location.Address1 !== null
+  )
     .map(
       (location) =>
         `<p><i class="fas fa-fw fa-map-marker-alt"></i><span>${location.Address1}</span> </p>`
@@ -243,38 +240,34 @@ function getLocation(productJson) {
 
 function getContacts(productJson) {
   if (!productJson.Contacts) {
-    return '';
+    return "";
   }
 
-  return productJson.Contacts
-    .map((contact) => {
-      return contact.ContactType === "Address"
-        ? `<a href="${contact.ContactLink}" target="_blank" class="nav-link"><i class="fas fa-fw fa-map-marker-alt pt-4"></i> ${contact.ContactMethod}</a> <br>`
-        : contact.ContactType === "Phone"
-        ? `<a href="${contact.ContactLink}" class="nav-link"><i class="fas fa-fw fa-phone-alt "></i> ${contact.ContactMethod}</a> <br>`
-        : contact.ContactType === "Web"
-        ? `<a href="${contact.ContactLink}" target="_blank"><button type="button" class="btn btn-danger loginbtn "><i class="fas fa-fw fa-globe "></i> ${contact.ContactMethod}</button></a>`
-        : "";
-    })
-    .join("");
+  return productJson.Contacts.map((contact) => {
+    return contact.ContactType === "Address"
+      ? `<a href="${contact.ContactLink}" target="_blank" class="nav-link"><i class="fas fa-fw fa-map-marker-alt pt-4"></i> ${contact.ContactMethod}</a> <br>`
+      : contact.ContactType === "Phone"
+      ? `<a href="${contact.ContactLink}" class="nav-link"><i class="fas fa-fw fa-phone-alt "></i> ${contact.ContactMethod}</a> <br>`
+      : contact.ContactType === "Web"
+      ? `<a href="${contact.ContactLink}" target="_blank"><button type="button" class="btn btn-danger loginbtn "><i class="fas fa-fw fa-globe "></i> ${contact.ContactMethod}</button></a>`
+      : "";
+  }).join("");
 }
 
+/* Copyright currentYear */
+var currentYear = new Date().getFullYear();
+document.getElementById("currentYear").innerHTML = currentYear;
 
+/* back to top */
 
-  /* Copyright currentYear */
-  var currentYear = new Date().getFullYear();
-  document.getElementById("currentYear").innerHTML = currentYear;
-  
-  /* back to top */
-  
-  window.addEventListener("scroll", function () {
-    var backToTopButton = document.getElementById("backToTopButton");
-    backToTopButton.classList.toggle("show", window.scrollY > 50);
+window.addEventListener("scroll", function () {
+  var backToTopButton = document.getElementById("backToTopButton");
+  backToTopButton.classList.toggle("show", window.scrollY > 50);
+});
+
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
   });
-  
-  function scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
+}
