@@ -1,68 +1,69 @@
-const homeurl = window.location.href.split("#")[0] + "#"; // Dynamic root path based on the current URL
+const productJsonRootUrl = "https://sdwebau.shopainternal.com/json/";
 
+// Get the productname from the URL
+const urlParams = new URLSearchParams(window.location.search);
+const productName = urlParams.get("productName");
 
-const rooturl = "http://sdwebau.shopainternal.com.s3-website-ap-southeast-2.amazonaws.com/json/";
+const jsonUrl = `${productJsonRootUrl}${productName}.json`;
+console.log(jsonUrl);
 
-const imagesurl = "http://sdwebau.shopainternal.com.s3-website-ap-southeast-2.amazonaws.com/images/";
+const resultContainer = document.getElementById("resultContainer");
 
-const indexFile = "http://sdwebau.shopainternal.com.s3-website-ap-southeast-2.amazonaws.com/json/aaa_productlist.json";
-
-let currentDataIndex = 0;
-
-
-
-async function fetchData() {
+async function getProduct() {
   try {
-    const response = await fetch(indexFile);
-    const dataArray = await response.json();
+    const response = await fetch(jsonUrl);
+    if (!response.ok) {
+      throw new Error("Network response was not ok.");
+    }
 
-    // Render the data on the HTML page
-    const resultContainer = document.getElementById('resultContainer');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    const productJson = await response.json();
+    
+    const imgUrl = `https://sdwebau.shopainternal.com/images/coupons/${productJson.ImageUri}`;
 
+    console.log(imgUrl)
+;
+    const setCtas = getCTA(productJson);
+    const setLocations = getLocation(productJson);
 
+    const setContacts = getContacts(productJson);
+    // Create HTML elements to display the nested fetch response
+    const nestedDataDiv = document.createElement("div");
 
-// Function to render the data of the current object
-function renderCurrentData() {
-  const data = dataArray[currentDataIndex];
-  const productName = data.ProductName;
-
-
-  fetch( `${rooturl}${productName}.json`)
-    .then(response => response.json())
-    .then(detailsData => {
-
-      const setCtas = getCTA(detailsData);
-      const setLocations = getLocation(detailsData);
-
-      const setContacts = getContacts(detailsData);
-      // Create HTML elements to display the nested fetch response
-      const nestedDataDiv = document.createElement('div');
-
-      function addPropertyIfExists(property, template) {
-        if (property !== null) {
-          return template;
-        }
-        return '';
+    function addPropertyIfExists(property, template) {
+      if (property !== null) {
+        return template;
       }
-      nestedDataDiv.innerHTML = `
+      return "";
+    }
+    nestedDataDiv.innerHTML = `
 
                                   <!-- /.first row start  -->
                                   <div class="row  shadow-lg m-5 py-2  bg-white"> 
                                           <div class=" row  py-2   ">  
                                           <div class="col-lg-4 ">
-                                           <img src="${imagesurl}coupons/${detailsData.ImageUri}" class="img-fluid rounded m-3" alt="${detailsData.Headline} with ${detailsData.Advertiser}">
+                                           <img src="${imgUrl}"{
+                                            productJson.ImageUri
+    }" class="img-fluid rounded m-3" alt="${productJson.Headline} with ${
+      productJson.Advertiser
+    }">
                                           </div>
                                       
                                           <div class="col-lg-8">
                                               <div class="card-body m-3  ">
-                                              <h1 class="card-title">${detailsData.Headline}</h1>
-                                              <h5 class="card-title">${detailsData.Advertiser}</h5>
-                                             <!-- <p class="card-text pt-3"><i class="fas fa-fw fa-tag"></i> ${detailsData.Saving}</p> -->
+                                              <h1 class="card-title">${
+                                                productJson.Headline
+                                              }</h1>
+                                              <h5 class="card-title">${
+                                                productJson.Advertiser
+                                              }</h5>
+                                             <!-- <p class="card-text pt-3"><i class="fas fa-fw fa-tag"></i> ${
+                                              productJson.Saving
+                                             }</p> -->
                                               ${setLocations}
-                                              ${addPropertyIfExists(detailsData.ValidUntil,
-                                              `<p class="card-text mt-3"><i class="far fa-fw fa-clock"></i> ${detailsData.ValidUntil}</p> `)}
+                                              ${addPropertyIfExists(
+                                                productJson.ValidUntil,
+                                                `<p class="card-text mt-3"><i class="far fa-fw fa-clock"></i> ${productJson.ValidUntil}</p> `
+                                              )}
                                               ${setCtas}
         
                                               <div class="d-flex justify-content-between">
@@ -92,7 +93,9 @@ function renderCurrentData() {
                                           <a class="nav-link fw-bold " href="#offerDetails">Offer Details</a>
                                           </li>
                                           <li class="nav-item">
-                                          <a class="nav-link fw-bold" href="#aboutAdvertiser">About ${detailsData.Advertiser} </a>
+                                          <a class="nav-link fw-bold" href="#aboutAdvertiser">About ${
+                                            productJson.Advertiser
+                                          } </a>
                                           </li>
                               
                                           <li class="nav-item">
@@ -131,30 +134,34 @@ function renderCurrentData() {
                               
                               <!-- /.offer detail start  -->
 
-                              ${addPropertyIfExists(detailsData.Detail,
+                              ${addPropertyIfExists(
+                                productJson.Detail,
                                 `                              
                               <div class="row m-2 pt-2 border-bottom " id="offerDetails" >
                               <h4 class="text-danger" >Offer Details</h4>
-                                  <div class="ms-3"> ${detailsData.Detail} </div>
+                                  <div class="ms-3"> ${productJson.Detail} </div>
                               
                                  
-                              </div> `)}
+                              </div> `
+                              )}
                               
                               <!-- /.offer detail end  -->
                               
                               <!-- / About  start  -->
 
                               
-                              ${addPropertyIfExists(detailsData.About,
+                              ${addPropertyIfExists(
+                                productJson.About,
 
-                              `<div class="row m-2 pt-2 border-bottom " id="offerDetails" >
+                                `<div class="row m-2 pt-2 border-bottom " id="offerDetails" >
                               
-                                 <h4 class="text-danger" id="aboutAdvertiser">About ${detailsData.Advertiser}</h4>
+                                 <h4 class="text-danger" id="aboutAdvertiser">About ${productJson.Advertiser}</h4>
                                  
-                                  <div class="ms-3 pb-4"> ${detailsData.About} </div>
+                                  <div class="ms-3 pb-4"> ${productJson.About} </div>
                               
                                  
-                              </div> `)}
+                              </div> `
+                              )}
                               
                               <!-- / About  end  -->
                               
@@ -176,15 +183,17 @@ function renderCurrentData() {
                               
                               <!-- /  Terms & Conditions  start  -->
 
-                              ${addPropertyIfExists(detailsData.Terms,
+                              ${addPropertyIfExists(
+                                productJson.Terms,
+
+                                `<div class="row m-2 pt-2  " id="offerDetails" >
                               
-                              `<div class="row m-2 pt-2  " id="offerDetails" >
-                              
-                                 <h4 class="text-danger" id="terms"> ${detailsData.Advertiser} Terms & Conditions</h4>
-                                 <div class="ms-3 pb-4"> ${detailsData.Terms} </div>
+                                 <h4 class="text-danger" id="terms"> ${productJson.Advertiser} Terms & Conditions</h4>
+                                 <div class="ms-3 pb-4"> ${productJson.Terms} </div>
                               
                                  
-                              </div> `)}
+                              </div> `
+                              )}
                               
                               <!-- / Terms & Conditions  end  -->
                                                           
@@ -195,55 +204,18 @@ function renderCurrentData() {
 
                                   `;
 
-      
-      resultContainer.innerHTML = '';
-      resultContainer.appendChild(nestedDataDiv);
-    })
-
-
-    .catch(error => {
-      console.error('Error occurred in nested fetch:', error);
-    });
-
-
-
-    
-
-    window.location.hash = data.ProductName;
-
-}
-
-// Initial rendering
-renderCurrentData();
-
-// Previous button click event
-prevBtn.addEventListener('click', () => {
-  if (currentDataIndex > 0) {
-    currentDataIndex--;
-    renderCurrentData();
-  }
-});
-
-// Next button click event
-nextBtn.addEventListener('click', () => {
-  if (currentDataIndex < dataArray.length - 1) {
-    currentDataIndex++;
-    renderCurrentData();
-  }
-});
-}  catch (error) {
-    console.error('Error occurred in first fetch:', error);
+    resultContainer.innerHTML = "";
+    resultContainer.appendChild(nestedDataDiv);
+  } catch (error) {
+    console.error("Error fetching data:", error);
   }
 }
 
-//  function  Call the to fetch  the data on the page
-fetchData();
+getProduct();
 
 
-
-
-function getCTA(detailsData) {
-  return detailsData.Ctas
+function getCTA(productJson) {
+  return productJson.Ctas
     .map((cta) => {
       if (cta.Type === "Phone") {
         return `<a class="btn btn-danger me-2 joinbtn" href="tel:${cta.Link}"><i class="fas fa-fw fa-phone-alt"></i> ${cta.Text}</a>`;
@@ -254,12 +226,13 @@ function getCTA(detailsData) {
     .join("");
 }
 
-function getLocation(detailsData) {
-  if (!detailsData.Locations) {
+
+function getLocation(productJson) {
+  if (!productJson.Locations) {
     return '';
   }
 
-  return detailsData.Locations
+  return productJson.Locations
     .filter(location => location.LocationType === "Address" && location.Address1 !== null)
     .map(
       (location) =>
@@ -268,12 +241,12 @@ function getLocation(detailsData) {
     .join("");
 }
 
-function getContacts(detailsData) {
-  if (!detailsData.Contacts) {
+function getContacts(productJson) {
+  if (!productJson.Contacts) {
     return '';
   }
 
-  return detailsData.Contacts
+  return productJson.Contacts
     .map((contact) => {
       return contact.ContactType === "Address"
         ? `<a href="${contact.ContactLink}" target="_blank" class="nav-link"><i class="fas fa-fw fa-map-marker-alt pt-4"></i> ${contact.ContactMethod}</a> <br>`
@@ -305,5 +278,3 @@ function getContacts(detailsData) {
       behavior: "smooth",
     });
   }
-  
-  
